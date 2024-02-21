@@ -1,25 +1,11 @@
 <?php
-include 'dm.con.php' ;
-if (isset($_POST['submit'])){
-
-    
-    $email=$_POST['email'];
-    $age=$_POST['age'];
-    $address=$_POST['address'];
-
-$sql="INSERT INTO student(email,age,address)
-values('$email','$age','$address')";
-$res =mysqli_query($con,$sql);
-if($res){
-  echo "data inserted";
-  
-}
-else{
-  echo "data is not inserted";
-
-}
-}
+include("dm.con.php");
+$read = "SELECT * FROM student";
+$result = mysqli_query($con,$read);
+if(mysqli_num_rows($result)>0)
+{
 ?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -32,22 +18,34 @@ else{
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-      <h1>student form</h1>
-      <form  method= "post">
-        <div class="form-group">
-          <label for="">email</label>
-          <input type="email"
-            class="form-control" name="email"  placeholder="enter your email">
-
-            <label for="">age</label>
-          <input type="text"
-            class="form-control" name="age"  placeholder="enter your age">
-          <label for="">address</label>
-          <input type="text"
-            class="form-control" name="address"  placeholder="enter your address">
-        </div>
-<button type="btn" class="btn btn-info" name= "submit">submit</button>
-      </form>
+      <table class="table">
+        <thead>
+            <tr>
+                <th>email</th>
+                <th>age</th>
+                <th>address</th>
+                <th>action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            while($rows = mysqli_fetch_array($result))
+            {
+            ?>
+            <tr>
+                <td scope="row"><?php echo $rows ['0']?></td>
+                <td><?php echo $rows ['1']?></td>
+                <td><?php echo $rows ['2']?></td>
+                <td><?php echo $rows ['3']?></td>
+                
+            </tr>
+         
+        </tbody>
+        <?php
+            }
+        }
+        ?>
+      </table>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
